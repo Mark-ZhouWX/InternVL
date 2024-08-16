@@ -105,7 +105,7 @@ model = InternVLChatModel.from_pretrained(
 
 tokenizer = AutoTokenizer.from_pretrained(path, trust_remote_code=True)
 # set the max number of tiles in `max_num`
-pixel_values = load_image('../examples/image1.jpg', max_num=6).to(torch.float16).cuda()
+pixel_values = load_image(f'{path}/examples/image1.jpg', max_num=6).to(torch.float16).cuda()
 
 generation_config = dict(
     num_beams=1,
