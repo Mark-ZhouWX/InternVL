@@ -6,6 +6,7 @@ from PIL import Image
 from torchvision.transforms.functional import InterpolationMode
 
 from internvl.model.internvl_chat import InternVLChatModel
+from internvl.patch.transfomers_generation_time_summary_patch import replace_transformers_generator_sample
 
 IMAGENET_MEAN = (0.485, 0.456, 0.406)
 IMAGENET_STD = (0.229, 0.224, 0.225)
@@ -85,8 +86,9 @@ def load_image(image_file, input_size=448, max_num=6):
     pixel_values = torch.stack(pixel_values)
     return pixel_values
 
+replace_transformers_generator_sample()
 
-path = "./InternVL2-1B"
+path = "./pretrained/InternVL2-1B"
 # If you have an 80G A100 GPU, you can put the entire model on a single GPU.
 model = InternVLChatModel.from_pretrained(
     path,
