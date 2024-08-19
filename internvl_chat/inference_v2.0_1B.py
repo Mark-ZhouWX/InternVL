@@ -89,10 +89,13 @@ def load_image(image_file, input_size=448, max_num=6):
 replace_transformers_generator_sample()
 
 path = "./pretrained/InternVL2-1B"
+torch_dtype = torch.float16
+print(f'model path: {path}, dtype: {torch_dtype}')
+
 # If you have an 80G A100 GPU, you can put the entire model on a single GPU.
 model = InternVLChatModel.from_pretrained(
     path,
-    torch_dtype=torch.float16,
+    torch_dtype=torch_dtype,
     low_cpu_mem_usage=True,
     trust_remote_code=True).eval().cuda()
 # Otherwise, you need to set device_map='auto' to use multiple GPUs for inference.
@@ -105,7 +108,7 @@ model = InternVLChatModel.from_pretrained(
 
 tokenizer = AutoTokenizer.from_pretrained(path, trust_remote_code=True)
 # set the max number of tiles in `max_num`
-pixel_values = load_image(f'{path}/examples/image1.jpg', max_num=12).to(torch.float16).cuda()
+pixel_values = load_image(f'{path}/examples/image1.jpg', max_num=12).to(torch_dtype).cuda()
 
 generation_config = dict(
     num_beams=1,
